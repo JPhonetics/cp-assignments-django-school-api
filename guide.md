@@ -141,9 +141,10 @@ docker run --rm \
 django-img
 
 18. Start Django
-    a. ./run_server.sh
+    a. chmod +x run_db.sh
+    b. ./run_server.sh
         i. You can access Django at http://127.0.0.1:8000
-    b. Keep this terminal session open, it will keep our django container running.
+    c. Keep this terminal session open, it will keep our django container running.
 
 19. Enter Django Container
     a. Open a new terminal
@@ -179,3 +180,15 @@ django-img
     b. \dt
         i. You should see student_app_student
     c. SELECT * FROM STUDENT_APP_STUDENT;
+
+25. Run test from inside django container
+    a. python manage.py test
+
+25. Update models.py for part II
+    a. Inside django container
+    b. python manage.py makemigrations
+    c. python manage.py migrate 
+
+26. New test - Copy the test.py from part II over. (school_proj > school_proj> student_app > test.py)
+    a. python manage.py test
+

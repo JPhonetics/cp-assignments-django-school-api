@@ -4,14 +4,32 @@ from django.db import models
 class Student(models.Model):
     name: str = models.CharField()
     student_email: str = models.EmailField(
-        max_length=254
+        max_length=254,
+        unique=True
         )
     personal_email: str = models.EmailField(
         max_length=254,
-        null=True
+        null=True,
+        unique=True
         )
-    locker_number: int = models.IntegerField()
-    locker_combination: str = models.CharField()
+    locker_number: int = models.IntegerField(
+        default=110,
+        unique=True
+    )
+    locker_combination: str = models.CharField(
+        default="12-12-12"
+    )
     good_student: bool = models.BooleanField(
-        default=False
+        default=True
         )
+    
+    def __str__(self):
+        return f"{self.name} - {self.student_email} - {self.locker_number}"
+    
+    def locker_reassignment(self, val: int):
+        self.locker_number = int(val)
+        self.save()
+        
+    def student_status(self, val: bool):
+        self.good_student = bool(val)
+        self.save()
