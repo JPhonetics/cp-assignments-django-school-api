@@ -54,7 +54,8 @@ CMD ["postgres"]
 docker build -t school-db-img .
 
 docker run -d --rm \
---name school-db \
+-p 5433:5432 \
+--name school_db \
 --network school-network \
 school-db-img
 
@@ -100,7 +101,7 @@ DATABASES = {
 15. Enter the psql
     a. docker exec -it school-db bash
         i. Enters the container
-    b. psql -d school_db -U student
+    b. psql -d school_db -U student || psql -h localhost -d school_db -p 5433 -U student
         i. connects to PostgreSQL
     c. \c school_db
         i. should return You are now connected to database "school_db" as user "student".
@@ -135,10 +136,9 @@ docker build -t school-django-img .
 docker run --rm \
 -v "$(pwd)/:/app/" \
 -p 8000:8000 \
---name school-django \
+--name school_django \
 --network school-network \
---user "$(id -u):$(id -g)" \
-django-img
+school-django-img
 
 18. Start Django
     a. chmod +x run_db.sh
@@ -152,7 +152,7 @@ django-img
         ii. This one will be our active connection to inside the django container.
     b. docker network inspect school-network
         i. We should see the db and django containers
-    c. docker exec -it school-django bash
+    c. docker exec -it school_django bash
 
 20. Run the Initial Migrations (still inside django container)
     a. python manage.py migrate 
@@ -184,7 +184,7 @@ django-img
 25. Run test from inside django container
     a. python manage.py test
 
-25. Update models.py for part II
+25. Update models.py for part II (https://github.com/Code-Platoon-Assignments/django-school-api-II)
     a. Inside django container
     b. python manage.py makemigrations
     c. python manage.py migrate 
@@ -192,3 +192,28 @@ django-img
 26. New test - Copy the test.py from part II over. (school_proj > school_proj> student_app > test.py)
     a. python manage.py test
 
+27. Onto part III (https://github.com/Code-Platoon-Assignments/django-school-api-III)
+    a. Add this import into models.py
+        i. from django.core import validators
+    b. Added validators for locker_number
+
+____ Admin Panel ____
+1. python manage.py createsuperuser
+2. http://localhost:8000/admin
+3. register the model
+from pokemon_app.models import Pokemon
+
+admin.site.register(Pokemon)
+4. Login
+5. Create __str__ to improve display
+
+28. create customer validators
+    a. touch student_app/validators.py
+    b. edit validators.py
+    c. Add this at the top
+        i. from django.core.exceptions import ValidationError
+    
+29. you're screwed
+
+30. https://github.com/Code-Platoon-Assignments/django-api-iv
+    a. pip install djangorestframework
