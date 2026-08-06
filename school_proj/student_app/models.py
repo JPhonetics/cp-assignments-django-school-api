@@ -7,6 +7,7 @@ from .validators import validate_combination_format
 # Create your models here.
 class Student(models.Model):
     name: str = models.CharField(
+        max_length=100,
         validators=[
             validate_name_format
         ]
@@ -51,3 +52,9 @@ class Student(models.Model):
     def student_status(self, val: bool):
         self.good_student = bool(val)
         self.save()
+        
+    def clean(self):
+        if self.student_email == self.personal_email:
+            raise ValidationError(
+                "Student email and personal email cannot be the same."
+            )

@@ -1,6 +1,5 @@
 from django.core.exceptions import ValidationError
 import re
-from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 def validate_name_format(val: str):
